@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tú Estilo, Tú Producto</title>
+    <style>
+        /* Variables de color para un esquema de colores coherente */
+        :root {
+            --primary-color: #007BFF;
+            --secondary-color: #6C757D;
+            --background-color: #F0F0F0;
+            --text-color: #212529;
+            --white-color: #FFFFFF;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--background-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: var(--white-color);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+        }
+        h1, h2 {
+            text-align: center;
+            color: var(--text-color);
+            margin-bottom: 2rem;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+        select {
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            border: 1px solid var(--secondary-color);
+        }
+        button {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            margin-top: 2rem;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0069D9;
+        }
+        .results {
+            display: none;
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 1rem;
+        }
+        p {
+            color: var(--text-color);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tú Estilo, Tú Producto</h1>
+        <form id="quiz-form">
+            <label>
+                ¿Prefieres los sabores dulces o salados?:
+                <select name="pregunta1">
+                    <option value="A">Dulce</option>
+                    <option value="B">Salado</option>
+                </select>
+            </label>
+            <label>
+                ¿Eres amante del chocolate o de los postres en general?:
+                <select name="pregunta2">
+                    <option value="A">Chocolate</option>
+                    <option value="B">No me gusta el chocolate</option>
+                </select>
+            </label>
+            <label>
+                ¿Te gustan los alimentos con sabor picante o con un toque cítrico?:
+                <select name="pregunta3">
+                    <option value="A">Me gustan los sabores fuertes</option>
+                    <option value="B">Me gustan los sabores suaves</option>
+                </select>
+            </label>
+            <label>
+                ¿Te gustan los Snacks con sabor a queso?:
+                <select name="pregunta4">
+                    <option value="A">Sí</option>
+                    <option value="B">No</option>
+                </select>
+            </label>
+            <label>
+                ¿Prefieres los alimentos saludables y bajos en calorías?:
+                <select name="pregunta5">
+                    <option value="A">Cuido mi dieta</option>
+                    <option value="B">Como lo que sea</option>
+                </select>
+            </label>
+            <button type="submit">Finalizar cuestionario</button>
+        </form>     
+        <div class="results" id="results">
+            <p style="font-weight: 100;">Felicidades encontraste la combinacion perfecta, el producto ideal hecho para ti.</p>
+            <h3 id="final-result"></h3>
+            <img src="" alt="Producto" id="product-image">
+            <p>Precio: <span id="product-price"></span></p>
+        </div>
+    </div>
+    <script>
+        const quizForm = document.getElementById("quiz-form");
+        const resultsDiv = document.getElementById("results");
+        const finalResult = document.getElementById("final-result");
+        const productImage = document.getElementById("product-image");
+        const productPrice = document.getElementById("product-price");
+
+        function calculateResult() {
+            // Aquí puedes agregar la lógica para calcular el resultado según las respuestas seleccionadas
+            // Por ejemplo, contar cuántas veces se eligió cada opción (A o B) y decidir el producto según la opción más seleccionada
+
+            const formData = new FormData(quizForm);
+            const selections = {};
+
+            for (const entry of formData.entries()) {
+                const value = entry[1];
+                if (!selections[value]) {
+                    selections[value] = 0;
+                }
+                selections[value]++;
+            }
+
+            let result;
+            let imagePath;
+            let price;
+
+            if (selections.A == 2 && selections.B == 3) {
+                result = "Palomitas caramelizadas";
+                imagePath = "Palomitas Yupi 25g.jpg";
+                price = "$0,35";
+            } else if (selections.A >= 4 && selections.B == 1) {
+                result = "Panquesito de chocolate";
+                imagePath = "Panquesito de chocolate.jpg";
+                price = "$0,25";    
+            } else if (selections.A == 3 && selections.B == 2) {
+                result = "Tatos de queso";
+                imagePath = "Tatos de queso 27g.jpg";
+                price = "$0,30";
+            } else if (selections.A >= 1 && selections.B >= 4) {
+                result = "Tatos de limon";
+                imagePath = "Tatos de limon picantes 27g.jpg";
+                price = "$0,30";
+            } else {
+                result = "Yogurt";
+                imagePath = "Yogurt Frutilla - Mora.jpg";
+                price = "$0,20";
+            }
+
+            return { result, imagePath, price };
+        }
+
+        quizForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            const { result, imagePath, price } = calculateResult();
+
+            finalResult.textContent = result;
+            productImage.src = imagePath;
+            productPrice.textContent = price;
+
+            quizForm.style.display = "none";
+            resultsDiv.style.display = "block";
+        });
+    </script>
+</body>
+</html>
